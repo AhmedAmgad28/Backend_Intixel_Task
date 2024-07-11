@@ -134,6 +134,7 @@ exports.deleteEvent = async (req, res) => {
 // Add attendee to event
 exports.addAttendee = async (req, res) => {
   try {
+    // Find the event by ID
     const event = await Event.findById(req.params.id);
 
     // Check if the event exists
@@ -141,12 +142,25 @@ exports.addAttendee = async (req, res) => {
       return res.status(404).json({ msg: 'Event not found' });
     }
 
-    // Check if the user has already signed to the event
+    // Find the user by ID
+    const user = await User.findById(req.user.id);
+
+    // Check if the user exists and retrieve their role
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Check if the user is an organizer
+    if (user.role === 'organizer') {
+      return res.status(400).json({ msg: 'Organizers cannot attend events' });
+    }
+
+    // Check if the user is already an attendee
     if (event.attendees.includes(req.user.id)) {
       return res.status(400).json({ msg: 'User already attending the event' });
     }
 
-    // Add customer id to the attendees list
+    // Add user ID to the attendees list
     event.attendees.push(req.user.id);
     await event.save();
 
