@@ -7,6 +7,16 @@ exports.createEvent = async (req, res) => {
   const { name, description, location, dateAndTime } = req.body;
 
   try {
+    // Check if there's an existing event at the same time by the same organizer
+    const conflictingEvent = await Event.findOne({
+      organizerID: req.user.id,
+      dateAndTime: dateAndTime
+    });
+
+    if (conflictingEvent) {
+      return res.status(400).json({ msg: 'An event by this organizer already exists at the same time.' });
+    }
+
     const newEvent = new Event({
       name,
       description,
@@ -22,6 +32,7 @@ exports.createEvent = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
@@ -65,6 +76,17 @@ exports.updateEvent = async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
+    // Check if there's an existing event at the same time by the same organizer (excluding the current event)
+    const conflictingEvent = await Event.findOne({
+      organizerID: req.user.id,
+      dateAndTime: dateAndTime,
+      _id: { $ne: req.params.id }
+    });
+
+    if (conflictingEvent) {
+      return res.status(400).json({ msg: 'An event by this organizer already exists at the same time.' });
+    }
+
     event.name = name || event.name;
     event.description = description || event.description;
     event.location = location || event.location;
@@ -77,6 +99,7 @@ exports.updateEvent = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 // Delete event
 exports.deleteEvent = async (req, res) => {

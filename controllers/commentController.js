@@ -70,10 +70,11 @@ exports.deleteComment = async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    await comment.remove();
+    await Comment.findByIdAndDelete(req.params.id);
     res.json({ msg: 'Comment removed' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
+
