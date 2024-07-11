@@ -22,7 +22,7 @@ exports.createComment = async (req, res) => {
 // Get comments by event ID
 exports.getCommentsByEventId = async (req, res) => {
   try {
-    const comments = await Comment.find({ eventID: req.params.eventID }).populate('userID', 'name role');
+    const comments = await Comment.find({ eventID: req.params.eventID }).populate('userID', 'name role profilePictureURL');
 
     res.json(comments);
   } catch (err) {
