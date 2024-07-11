@@ -4,11 +4,20 @@
 
 This is the backend part of the Event Management System. It provides RESTful API endpoints for user management, event management, and comment management. It is built using Node.js, Express, and MongoDB.
 
+## Configuration
+
+You will need to create `.env` file in the root directory including these environemt variables (MONGO_URI , JWT_SECRET)
+
 ## Scripts
 
 - `start`: Start the application
     ```bash
     npm start
+    ```
+
+- `dev`: Start the application using nodemon for automatic restart on file changes
+    ```bash
+    npm run dev
     ```
 
 ## API Endpoints
