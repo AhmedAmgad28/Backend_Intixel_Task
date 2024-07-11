@@ -96,7 +96,6 @@ exports.loginUser = async (req, res) => {
 // Update user profile
 exports.updateUserProfile = [
   check('name', 'Name must be at least 8 characters long').optional().isLength({ min: 8 }),
-  check('email', 'Please include a valid email').optional().isEmail(),
   check('age', 'Age must be between 16 and 100').optional().isInt({ min: 16, max: 100 }),
   check('profilePictureURL', 'Profile picture must end with .png or .jpg').optional().matches(/\.(jpg|jpeg|png)$/),
 
@@ -106,14 +105,13 @@ exports.updateUserProfile = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, age, gender, profilePictureURL, country, city } = req.body;
+    const { name, age, gender, profilePictureURL, country, city } = req.body;
 
     try {
       const user = await User.findById(req.user.id);
 
       if (user) {
         user.name = name || user.name;
-        user.email = email || user.email;
         user.age = age || user.age;
         user.gender = gender || user.gender;
         user.profilePictureURL = profilePictureURL || user.profilePictureURL;
@@ -131,6 +129,7 @@ exports.updateUserProfile = [
     }
   }
 ];
+
 
 // Get user profile
 exports.getUserProfile = async (req, res) => {
