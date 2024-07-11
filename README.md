@@ -27,6 +27,7 @@ You will need to create `.env` file in the root directory including these enviro
 - **Register User**: `POST /api/users/register`
 - **Login User**: `POST /api/users/login`
 - **Update User Profile**: `PUT /api/users/profile` (Protected)
+- **Get User By ID**: `GET /api/users/:id`
 
 ### Event Routes
 
