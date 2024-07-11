@@ -131,3 +131,18 @@ exports.updateUserProfile = [
     }
   }
 ];
+
+// Get user profile
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ msg: 'User not found' });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
