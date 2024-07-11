@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  name: { type: String, required: true, minlength: 8 },
+  email: { type: String, required: true, unique: true, match: /^\S+@\S+\.\S+$/ },
+  password: { type: String, required: true, minlength: 8 },
   role: { type: String, enum: ['organizer', 'customer'], required: true },
-  age: { type: Number },
+  age: { type: Number, min: 16, max: 100 },
   gender: { type: String, enum: ['male', 'female', 'other'] },
-  profilePictureURL: { type: String },
+  profilePictureURL: { type: String, match: /\.(jpg|jpeg|png)$/ },
   country: { type: String, default: 'Egypt' },
   city: { type: String }
 });

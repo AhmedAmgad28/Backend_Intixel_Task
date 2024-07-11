@@ -7,12 +7,12 @@ exports.createComment = async (req, res) => {
 
   try {
     const newComment = new Comment({
-      userID: req.user.id,
+      userID: req.user.id, // Get user ID from the request
       eventID,
       commentText
     });
 
-    const comment = await newComment.save();
+    const comment = await newComment.save(); // Save new comment to database
     res.json(comment);
   } catch (err) {
     console.error(err.message);
@@ -23,7 +23,7 @@ exports.createComment = async (req, res) => {
 // Get comments by event ID
 exports.getCommentsByEventId = async (req, res) => {
   try {
-    const comments = await Comment.find({ eventID: req.params.eventID }).populate('userID', 'name');
+    const comments = await Comment.find({ eventID: req.params.eventID }).populate('userID', 'name role');
 
     res.json(comments);
   } catch (err) {
@@ -43,6 +43,7 @@ exports.updateComment = async (req, res) => {
       return res.status(404).json({ msg: 'Comment not found' });
     }
 
+    // Check if the user is the owner of the comment
     if (comment.userID.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
@@ -62,10 +63,12 @@ exports.deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
 
+    // Check if the comment already exists
     if (!comment) {
       return res.status(404).json({ msg: 'Comment not found' });
     }
 
+    // Check if the user is the owner of the comment
     if (comment.userID.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }

@@ -3,8 +3,8 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const auth = require('../middleware/auth');
 
-router.post('/register', userController.registerUser);
-router.post('/login', userController.loginUser);
-router.put('/profile', auth, userController.updateUserProfile);
+router.post('/register', userController.registerUser); // User registration
+router.post('/login', userController.loginUser); // User login
+router.put('/profile', auth, userController.updateUserProfile); // Get current user profile
 
 module.exports = router;
