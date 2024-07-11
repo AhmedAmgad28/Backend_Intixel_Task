@@ -53,6 +53,8 @@ You will need to create `.env` file in the root directory including these enviro
 
 ### Event Model
 - The Event model represents an event in the system. It includes attributes such as name, description, location, date and time, organizer ID, and a list of attendees.
+- `An organizer can't be assigned to more than one event at the same date and time`
+- `Events can take a place at the same location in the same time`
 
 ### Comment Model
 - The Comment model represents a comment made on an event. It includes attributes such as user ID, event ID, comment text, and the date it was created.
